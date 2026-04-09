@@ -32,7 +32,7 @@ def addProduct(request):
 @api_view(['PUT'])
 def updateProduct(request, pk):
     product = Product.objects.get(id=pk)
-    serializer = ProductSerializer(product, data=request.data)
+    serializer = ProductSerializer(product, data = request.data)
 
     if serializer.is_valid():
         serializer.save()
@@ -42,7 +42,7 @@ def updateProduct(request, pk):
 
 
 @api_view(['DELETE'])
-def product_delete(request, pk):
+def productDelete(request, pk):
     product = Product.objects.get(id=pk)
     product.delete()
 
