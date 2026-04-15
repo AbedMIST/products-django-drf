@@ -2,6 +2,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from drf_spectacular.utils import extend_schema, inline_serializer
+from rest_framework import serializers as drf_serializers
 from django.contrib.auth.models import User
 from .models import Product
 from .serializers import ProductSerializer
@@ -31,6 +33,10 @@ def productDetail(request, pk):
     return Response(serializer.data)
 
 
+@extend_schema(
+    request=ProductSerializer,
+    responses={201: ProductSerializer},
+)
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def addProduct(request):
@@ -44,6 +50,10 @@ def addProduct(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(
+    request=ProductSerializer,
+    responses={200: ProductSerializer},
+)
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def updateProduct(request, pk):
@@ -80,6 +90,15 @@ def productDelete(request, pk):
     return Response({"message": "Product deleted"}, status=status.HTTP_204_NO_CONTENT)
 
 
+@extend_schema(
+    request=inline_serializer(
+        name='RegisterRequest',
+        fields={
+            'username': drf_serializers.CharField(),
+            'password': drf_serializers.CharField(),
+        },
+    ),
+)
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register(request):
