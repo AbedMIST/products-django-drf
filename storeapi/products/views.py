@@ -29,6 +29,7 @@ def productDetail(request, pk):
             {"error": "Product not found"},
             status=status.HTTP_404_NOT_FOUND
         )
+    
     serializer = ProductSerializer(product)
     return Response(serializer.data)
 
@@ -119,6 +120,7 @@ def register(request):
         )
     
     user = User.objects.create_user(username=username, password=password)
+
     return Response(
         {"message": "User created successfully", "username": username},
         status=status.HTTP_201_CREATED
