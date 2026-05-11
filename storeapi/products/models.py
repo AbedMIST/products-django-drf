@@ -4,7 +4,7 @@ from store.models import Store
 class Product(models.Model):
     name = models.CharField(max_length=100)
     price = models.IntegerField()
-    description = models.TextField()
+    description = models.TextField(null=True, blank=True)  # Make optional
     store = models.ForeignKey(
         Store,
         on_delete=models.CASCADE,
